@@ -1,0 +1,140 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global Settings */
+body {
+    @apply bg-white-off text-gray-900 antialiased overflow-hidden selection:bg-brand-500 selection:text-white;
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+}
+
+/* Typography Overrides */
+h1,
+h2,
+h3 {
+    font-family: 'Montserrat', 'Manrope', sans-serif;
+    @apply font-bold;
+    letter-spacing: -0.025em;
+}
+
+h4,
+h5,
+h6 {
+    @apply font-sans font-bold;
+    letter-spacing: -0.01em;
+}
+
+/* Custom Scrollbar (Roma Red Theme) */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(142, 31, 47, 0.04);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(142, 31, 47, 0.15);
+    border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(142, 31, 47, 0.3);
+}
+
+/* Global Transitions */
+.transition-default {
+    @apply transition-all duration-200 ease-out;
+}
+
+button,
+a,
+input,
+select {
+    @apply transition-all duration-200;
+}
+
+/* Utility Classes - Design System Implementation */
+
+.card-light {
+    @apply bg-white rounded-xl border border-brand-100 shadow-card;
+    @apply hover:shadow-brand hover:-translate-y-0.5 transition-all duration-300;
+}
+
+/* Glassmorphism Card */
+.glass-card {
+    @apply bg-white/80 backdrop-blur-md border border-brand-100 shadow-card rounded-xl;
+}
+
+.btn-primary {
+    @apply bg-gradient-to-r from-brand-500 to-brand-600 text-white font-bold rounded-lg px-6 py-3;
+    @apply shadow-brand hover:shadow-brand-lg hover:scale-[1.02] active:scale-95;
+    @apply disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100;
+}
+
+.btn-secondary {
+    @apply bg-white hover:bg-brand-50 text-brand-600 font-semibold rounded-lg px-6 py-3;
+    @apply border border-brand-200 shadow-sm hover:border-brand-300;
+}
+
+.input-field {
+    @apply bg-white border border-gray-200 text-gray-900 text-sm rounded-lg;
+    @apply focus:border-brand-500 focus:ring-2 focus:ring-brand-200 block w-full p-3 shadow-sm;
+    @apply placeholder:text-gray-400;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Label Override */
+label {
+    @apply block mb-1.5 text-xs font-bold uppercase tracking-wider text-gray-600;
+    font-family: 'Manrope', sans-serif;
+    letter-spacing: 0.05em;
+}
+
+/* Badges */
+.badge-allow {
+    @apply bg-brand-100 text-brand-800 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide border border-brand-200;
+}
+
+.badge-deny {
+    @apply bg-rose-100 text-rose-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide border border-rose-200;
+}
+
+/* Status Dots */
+.status-dot {
+    @apply w-2 h-2 rounded-full;
+}
+
+.status-dot.active {
+    @apply bg-accent-400;
+    /* Use Roma Yellow accent for active dot */
+    box-shadow: 0 0 8px rgba(240, 188, 66, 0.6);
+}
+
+.status-dot.inactive {
+    @apply bg-gray-300;
+}
+
+/* Legacy Support / Overrides */
+.glass-input {
+    @apply input-field;
+}
+
+/* Wizard Animations */
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.animate-shimmer {
+    animation: shimmer 2s infinite;
+}

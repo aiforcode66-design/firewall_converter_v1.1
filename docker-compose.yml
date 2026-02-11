@@ -1,0 +1,63 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: firewall-postgres
+    ports:
+      - "5434:5432"
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: firewall-backend
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./backend:/app/backend
+      - ./models.py:/app/models.py
+      - ./generators:/app/generators
+      - ./parsers:/app/parsers
+      - ./convert:/app/convert
+      - ./analyzers:/app/analyzers
+      - ./download:/app/download
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://${DB_USER}:${DB_PASSWORD}@postgres:5432/${DB_NAME}
+      - APP_NAME=Firewall Converter
+      - DEBUG=True
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend_src
+      dockerfile: Dockerfile
+    container_name: firewall-frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend_src:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_URL=http://localhost:8001
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
